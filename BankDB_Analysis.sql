@@ -203,6 +203,7 @@ HAVING AVG(balance) > 500;
    
 #9
 #find all customers who have both an account and a loan at the bank
+#non-nested
 SELECT DISTINCT
     c.customer_name
 FROM
@@ -211,6 +212,21 @@ FROM
     depositor d ON (c.customer_name = d.customer_name)
         INNER JOIN
     borrower bo ON (c.customer_name = bo.customer_name);
+
+#nested
+SELECT 
+    customer_name
+FROM
+    customer
+WHERE
+    customer_name IN (SELECT 
+            customer_name
+        FROM
+            depositor)
+        AND customer_name IN (SELECT 
+            customer_name
+        FROM
+            borrower);
 
 #10
 #find all customers who have a loan at the bank but do not have an account at the bank
